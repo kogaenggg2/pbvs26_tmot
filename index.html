@@ -679,7 +679,7 @@
     <h2 class="section-title">Abstract</h2>
     <hr class="section-divider">
     <p class="abstract-text">
-      Thermal multi-object tracking (MOT) is essential for surveillance and safety-critical perception in low-visibility environments, yet it remains challenging due to weak appearance cues, low contrast, frequent occlusions, and unstable object boundaries. We present a <strong>three-stage framework</strong> for thermal pedestrian MOT on the TP-MOT benchmark, consisting of thermal pedestrian detection, online tracking, and offline trajectory refinement. Our main contribution is a <strong>lightweight post-processing module</strong> that treats identity continuity as a first-class objective by stitching fragmented tracklets using temporal continuity, spatial proximity, motion consistency, and border-aware constraints. Unlike approaches that rely on heavy re-identification models or costly global optimization, the proposed refinement stage improves identity preservation while allowing the online tracker to remain simple and efficient. Experiments on the PBVS Thermal MOT benchmark show that the proposed refinement stage consistently reduces fragmentation and improves continuity over raw tracking outputs, yielding a robust and practical real-time solution for thermal pedestrian surveillance.
+      Tracking multiple objects in thermal imagery is important for surveillance and perception under low-visibility conditions, but thermal images pose specific difficulties: objects lack distinctive appearance features, contrast is low, and occlusions are common. We propose <strong>a three-stage framework</strong> for pedestrian MOT on the TP-MOT benchmark, combining thermal-adapted detection, online tracking, and an offline tracklet stitching module. The core of our approach is <strong>a lightweight post-processing step</strong> that reconnects fragmented trajectories by exploiting temporal gaps, spatial proximity, motion consistency, and boundary-aware constraints. This design keeps the online tracker simple — no re-identification network or global optimization is needed — while substantially improving identity preservation. On the PBVS Thermal MOT benchmark, the proposed stitching stage consistently reduces fragmentation and improves long-term identity continuity over the baseline tracking output, offering a practical and real-time-capable solution for thermal pedestrian surveillance.
     </p>
   </div>
 </section>
@@ -694,20 +694,17 @@
       <div class="insight-card problem">
         <h4><i class="fas fa-exclamation-triangle"></i>&ensp;Thermal MOT Challenges</h4>
         <ul>
-          <li>No clothing texture &mdash; only heat signatures</li>
-          <li>Low contrast between pedestrians and background</li>
-          <li>Frequent occlusion and overlapping targets</li>
-          <li>Non-linear motion &amp; abrupt scale changes</li>
-          <li>Heavy Re-ID models increase cost prohibitively</li>
+          <li>Heat-only sensing &mdash; no color or texture cues</li>
+          <li>Low contrast, frequent occlusion</li>
+          <li>Abrupt motion & scale changes</li>
         </ul>
       </div>
       <div class="insight-card solution">
         <h4><i class="fas fa-lightbulb"></i>&ensp;Our Key Insight</h4>
         <ul>
-          <li>Stage-wise parameter tuning over complex models</li>
-          <li>Lightweight SORT-based online tracker</li>
-          <li>Online short-gap identity repair (Δt ≤ 7, d ≤ 60 px)</li>
-          <li>Offline motion-consistent tracklet stitching</li>
+          <li>Tune a simple pipeline, don't stack complex modules</li>
+          <li>SORT tracker + offline tracklet stitching</li>
+          <li>Short-gap repair (Δt ≤ 7, d ≤ 60 px) + motion-consistent merging</li>
           <li>No Re-ID needed &mdash; 96,000× less memory than SAM3</li>
         </ul>
       </div>
@@ -963,17 +960,17 @@
       <div class="contrib-card">
         <div class="contrib-icon purple"><i class="fas fa-puzzle-piece"></i></div>
         <h4>Modular Pipeline</h4>
-        <p>Unified detection–tracking–repair framework with configurable backends. Enables reproducible benchmarking across tracker variants.</p>
+        <p>Detection → Tracking → Repair, each swappable. Easy to benchmark different tracker variants on the same framework.</p>
       </div>
       <div class="contrib-card">
         <div class="contrib-icon gold"><i class="fas fa-link"></i></div>
         <h4>Identity-Repair Module</h4>
-        <p>Complementary online short-gap ID recovery and offline motion-consistent tracklet stitching that improves IDF1 by +4.15%p.</p>
+        <p>Online short-gap recovery + offline tracklet stitching together push IDF1 by +4.15%p.</p>
       </div>
       <div class="contrib-card">
         <div class="contrib-icon green"><i class="fas fa-feather-alt"></i></div>
         <h4>Lightweight &amp; Efficient</h4>
-        <p>No heavy Re-ID needed. SORT-based tracking uses only 0.25 MB &mdash; a 96,000× reduction compared to SAM3's 24 GB footprint.</p>
+        <p>No Re-ID module. SORT tracking costs 0.25 MB &mdash; 96,000× smaller than SAM3 (24 GB).</p>
       </div>
     </div>
   </div>
